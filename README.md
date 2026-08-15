@@ -1,14 +1,23 @@
 # Scholarly Record Ontology (SRO)
 
-**An ontology and open dataset for the integrity status of the scholarly record — built to measure how badly the registers of that record disagree with each other.**
+**An ontology and open dataset for the integrity status of the scholarly record, built to measure how badly the registers of that record disagree with each other.**
 
-Legal publishing solved this problem in 1873. Frank Shepard began printing gummed
-labels listing every later case that cited, questioned or overturned an earlier
-one. That idea became the citator: look up an authority, and the system tells you
-whether it still stands. A lawyer who cites overturned authority has committed
-malpractice, and the tooling makes that hard to do by accident.
+Legal publishing solved this problem in 1873. Frank Shepard, a salesman for a
+Chicago legal publisher, began printing gummed labels, "Adhesive Annotations",
+listing every later case that cited an earlier one, with one-letter codes marking
+whether it had been overruled, criticised, modified or applied. That idea became
+the citator: look up an authority, and the system tells you whether it still
+stands. A lawyer who cites overturned authority has committed malpractice, and
+the tooling makes that hard to do by accident.
 
 Science has no citator. It has registers, and the registers do not agree.
+
+The sharpest way to see the gap is that **one company owns both sides of it**.
+Reed Elsevier, now RELX, acquired Shepard's in 1996 and took full ownership in
+1998; it also owns Elsevier, the largest publisher of scientific literature, and
+Scopus. The corporate group that operates the most rigorous citation-integrity
+system ever built for law publishes a scientific record in which a retraction
+notice for a *Nature* paper is itself recorded as retracted research.
 
 This repository contains the ontology, the reproducible pipeline, and the
 measurements.
@@ -51,11 +60,11 @@ them as retracted work:
 
 The most legible example: **[10.1038/s41586-023-06774-2](https://doi.org/10.1038/s41586-023-06774-2)**,
 "Retraction Note: Evidence of near-ambient superconductivity in a N-doped lutetium
-hydride" — the *Nature* retraction note for one of the most scrutinised physics
+hydride", the *Nature* retraction note for one of the most scrutinised physics
 papers of the decade. OpenAlex records the retraction note itself as retracted.
 
-The consequence is not academic. Anything filtering `is_retracted:true` — an
-integrity dashboard, a bibliometric study, a retrieval-augmented language model —
+The consequence is not academic. Anything filtering `is_retracted:true` (an
+integrity dashboard, a bibliometric study, a retrieval-augmented language model)
 receives the corrective apparatus of science mixed in with the corrupted
 literature, and cannot tell them apart.
 
@@ -92,7 +101,7 @@ explicitly rather than silently collapsing it (`sro:isSelfReferential`).
 ### 5. Retracted work keeps being cited
 
 **291,177** citations to retracted works occurred in years after the retraction
-date, across **35,261** distinct retracted works. This is a **lower bound** — see
+date, across **35,261** distinct retracted works. This is a **lower bound**, see
 the build report for why.
 
 ### 6. A null result, stated plainly
@@ -100,7 +109,7 @@ the build report for why.
 I expected to find that OpenAlex frequently holds a record for a retracted paper
 without flagging it. It does not. Of 18,705 Retraction Watch DOIs probed and
 found in OpenAlex, only **18 (0.1%)** were unflagged. Where OpenAlex has the
-paper, it almost always knows. The failure is in the opposite direction — it
+paper, it almost always knows. The failure is in the opposite direction: it
 flags too much, and flags the wrong objects. This hypothesis was wrong and is
 reported rather than buried.
 
@@ -109,7 +118,7 @@ reported rather than buried.
 ## Why an ontology, and what it does differently
 
 The existing scholarly vocabularies model retraction as a settled fact about a
-work. I checked, rather than assumed — the files are fetched and grepped in the
+work. I checked, rather than assumed. The files are fetched and grepped in the
 build report:
 
 - **CiTO** has `cito:retracts` and `cito:isRetractedBy`
@@ -121,18 +130,18 @@ real data:
 
 | Real condition | Modelled by SPAR? |
 |---|---|
-| Expression of concern | **No** — the string does not occur in FaBiO, CiTO, PSO, PRO, SCoRO or DEO |
-| Reinstatement of a retracted work | **No** — retraction is treated as terminal |
+| Expression of concern | **No**, the string does not occur in FaBiO, CiTO, PSO, PRO, SCoRO or DEO |
+| Reinstatement of a retracted work | **No**, retraction is treated as terminal |
 | Partial retraction | **No** |
 | Removal (distinct from retraction) | **No** |
-| Two registers asserting different statuses | **No** — status is a property of the work |
+| Two registers asserting different statuses | **No**, status is a property of the work |
 | A register holding the record and staying silent | **No** |
 | A signal propagating to citing works | **No** |
 
 SRO's central commitment: **retraction status is not a property of a work. It is
 a dated claim by a named register.** Every claim is reified as an
 `sro:IntegrityAssertion` attributed to an `sro:Register`, with the register's raw
-status string retained verbatim — because normalising `retration` to `retraction`
+status string retained verbatim, because normalising `retration` to `retraction`
 destroys the evidence that the vocabulary is broken.
 
 On top of that sit two things the scholarly graph has never had: first-class
@@ -194,7 +203,7 @@ under their own terms.
 
 Built by **Fabio Rovai** at **The Tesseract Academy** (Kampakis and Co Ltd), as
 part of a programme of open ontologies for domains where identifier governance
-quietly fails — previously in [investment fund data](https://github.com/fabio-rovai/investment-fund-ontology)
+quietly fails, previously in [investment fund data](https://github.com/fabio-rovai/investment-fund-ontology)
 and [insurance and reinsurance registers](https://github.com/fabio-rovai/insurance-register-ontology).
 The pattern repeats across every sector examined so far: the register everyone
 trusts disagrees with the register next to it, and nothing in the data model can

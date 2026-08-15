@@ -12,7 +12,7 @@ the pipeline as the implementation.
 
 ---
 
-## Q1 — Which registers assert a status for a given work, and do they agree?
+## Q1. Which registers assert a status for a given work, and do they agree?
 
 ```sparql
 PREFIX sro: <https://ontology.tesseract.academy/sro/>
@@ -26,7 +26,7 @@ SELECT ?register ?status ?date ?raw WHERE {
 }
 ```
 
-## Q2 — The uncontrolled vocabulary, straight from the data
+## Q2. The uncontrolled vocabulary, straight from the data
 
 Every distinct raw status string a register actually published, with counts.
 This is how the misspellings surface.
@@ -39,7 +39,7 @@ SELECT ?raw (COUNT(*) AS ?n) WHERE {
 } GROUP BY ?raw ORDER BY DESC(?n)
 ```
 
-## Q3 — Corrective notices with no independent identity
+## Q3. Corrective notices with no independent identity
 
 ```sparql
 PREFIX sro: <https://ontology.tesseract.academy/sro/>
@@ -49,7 +49,7 @@ SELECT (COUNT(DISTINCT ?a) AS ?selfReferential) WHERE {
 }
 ```
 
-## Q4 — The category error: notices marked as retracted research
+## Q4. The category error: notices marked as retracted research
 
 ```sparql
 PREFIX sro: <https://ontology.tesseract.academy/sro/>
@@ -62,7 +62,7 @@ SELECT ?doi WHERE {
 }
 ```
 
-## Q5 — Silent omissions: one register asserts, another holds the record and says nothing
+## Q5. Silent omissions: one register asserts, another holds the record and says nothing
 
 ```sparql
 PREFIX sro: <https://ontology.tesseract.academy/sro/>
@@ -76,7 +76,7 @@ SELECT ?doi ?asserting ?silent WHERE {
 }
 ```
 
-## Q6 — Works whose status is contested rather than settled
+## Q6. Works whose status is contested rather than settled
 
 ```sparql
 PREFIX sro: <https://ontology.tesseract.academy/sro/>

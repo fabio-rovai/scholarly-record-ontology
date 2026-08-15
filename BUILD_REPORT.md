@@ -13,8 +13,8 @@ the assumption that a reader wants to attack the figures.
 |---|---|---|---|
 | Retraction Watch | `api.labs.crossref.org/data/retractionwatch?<email>` | 71,799 rows, 65.8 MB | **complete** |
 | Crossref updates | `api.crossref.org/works?filter=update-type:<t>` cursor-paged, 13 types | 420,657 records, 175 MB | **complete** |
-| OpenAlex retracted | `api.openalex.org/works?filter=is_retracted:true` cursor-paged | 107,200 of 134,094 (80.0%) | **incomplete — see §3** |
-| OpenAlex DOI probe | batched `filter=doi:a\|b\|…` over Retraction Watch DOIs | 18,717 of 62,708 (29.8%) | **incomplete — see §3** |
+| OpenAlex retracted | `api.openalex.org/works?filter=is_retracted:true` cursor-paged | 107,200 of 134,094 (80.0%) | **incomplete, see §3** |
+| OpenAlex DOI probe | batched `filter=doi:a\|b\|…` over Retraction Watch DOIs | 18,717 of 62,708 (29.8%) | **incomplete, see §3** |
 | SPAR ontologies | `purl.org/spar/{cito,fabio,pso,pro,scoro,deo}` via content negotiation | 6 files, all parsed | **complete** |
 
 ## 2. Retraction Watch composition
@@ -69,7 +69,7 @@ history is **not verified**.
 - **Unaffected (complete data):** the Crossref × Retraction Watch comparison
   (README finding 1), the `update-type` vocabulary analysis (finding 3), and the
   self-referential notice rate (finding 4). These use only complete harvests.
-- **Lower bounds:** every absolute count derived from OpenAlex — notices flagged
+- **Lower bounds:** every absolute count derived from OpenAlex: notices flagged
   retracted, post-retraction citations, the three-way union. Adding the missing
   20% can only increase them.
 - **Provisional, direction of bias unknown:** the three-way agreement figure of
@@ -110,7 +110,7 @@ full cursor harvests, never facets.
 ## 6. Ontology alignment: every external IRI was verified before use
 
 No alignment was asserted from memory. Each target was fetched and grepped, and
-only `skos:closeMatch` / `skos:broadMatch` were used — never `owl:equivalentClass`
+only `skos:closeMatch` / `skos:broadMatch` were used, never `owl:equivalentClass`
 or `skos:exactMatch`, because the source vocabularies model a different thing
 (a settled fact about a work) from what SRO models (a dated claim by a register).
 
@@ -127,11 +127,11 @@ from the prefix declaration will produce IRIs that do not exist.
 Verified **absent** across `cito`, `fabio`, `pso`, `pro`, `scoro`, `deo`
 (case-insensitive string search of the fetched Turtle):
 
-- "expression of concern" — 0 occurrences in any file
-- "reinstat" — 0 files
-- "partial retraction" — 0 files
-- "removal" — 0 files
-- "propagat" — 0 files
+- "expression of concern": 0 occurrences in any file
+- "reinstat": 0 files
+- "partial retraction": 0 files
+- "removal": 0 files
+- "propagat": 0 files
 
 ## 7. Validation
 
