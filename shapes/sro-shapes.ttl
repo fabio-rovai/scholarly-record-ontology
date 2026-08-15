@@ -1,0 +1,154 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix sro:   <https://ontology.tesseract.academy/sro/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+
+#################################################################
+#  SRO validation, in three layers
+#
+#  Layer 1  structural   an assertion that cannot be attributed is not evidence
+#  Layer 2  value        statuses and identifiers must be well formed
+#  Layer 3  coherence    rules that catch the failures found in real registers
+#################################################################
+
+### ---------------- Layer 1: structural ----------------
+
+sro:AssertionShape a sh:NodeShape ;
+    sh:targetClass sro:IntegrityAssertion ;
+    rdfs:label "Layer 1: every integrity assertion is attributable"@en ;
+    sh:property [
+        sh:path sro:aboutWork ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:message "An integrity assertion must be about exactly one work." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        sh:path sro:assertedBy ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:class sro:Register ;
+        sh:message "An integrity assertion must name exactly one asserting register. Unattributed integrity claims are not usable evidence." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        sh:path sro:hasStatus ;
+        sh:minCount 1 ;
+        sh:message "An integrity assertion must carry a status from the SRO scheme." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        sh:path sro:rawStatusLabel ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "The register's own status string must be retained so that normalisation is auditable." ;
+        sh:severity sh:Warning ;
+    ] .
+
+sro:WorkShape a sh:NodeShape ;
+    sh:targetClass sro:ScholarlyWork ;
+    rdfs:label "Layer 1/2: works carry a well-formed DOI"@en ;
+    sh:property [
+        sh:path sro:doi ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^10\\.[0-9]{4,9}/[^\\s]+$" ;
+        sh:message "A work must carry exactly one normalised DOI matching the registered-prefix form." ;
+        sh:severity sh:Violation ;
+    ] .
+
+### ---------------- Layer 2: value ----------------
+
+sro:StatusValueShape a sh:NodeShape ;
+    sh:targetClass sro:IntegrityAssertion ;
+    rdfs:label "Layer 2: status values come from the controlled scheme"@en ;
+    sh:property [
+        sh:path sro:hasStatus ;
+        sh:in ( sro:retracted sro:partially-retracted sro:expression-of-concern
+                sro:corrected sro:withdrawn sro:removed sro:reinstated sro:contested ) ;
+        sh:message "Status must be a member of the SRO integrity status scheme." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        sh:path sro:assertedDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message "An assertion carries at most one date, typed xsd:date." ;
+        sh:severity sh:Violation ;
+    ] .
+
+### ---------------- Layer 3: coherence ----------------
+
+# R1  A corrective notice must not itself be asserted retracted.
+#     This is the category error measured in this project: registers that join on
+#     the wrong key mark the announcement of a retraction as retracted research.
+sro:NoticeNotRetractedShape a sh:NodeShape ;
+    sh:targetClass sro:CorrectiveNotice ;
+    rdfs:label "Layer 3 R1: a retraction notice is not itself retracted research"@en ;
+    sh:sparql [
+        sh:message "This node is a corrective notice, yet a register asserts a retracted status for it. The corrective apparatus is being recorded as corrupted literature." ;
+        sh:severity sh:Violation ;
+        sh:prefixes sro: ;
+        sh:select """
+            SELECT $this WHERE {
+              ?a <https://ontology.tesseract.academy/sro/aboutWork> $this ;
+                 <https://ontology.tesseract.academy/sro/hasStatus> <https://ontology.tesseract.academy/sro/retracted> .
+            }
+        """ ;
+    ] .
+
+# R2  A self-referential notice has no independent identity.
+sro:SelfReferentialNoticeShape a sh:NodeShape ;
+    sh:targetClass sro:IntegrityAssertion ;
+    rdfs:label "Layer 3 R2: self-referential corrective notices are flagged"@en ;
+    sh:property [
+        sh:path sro:isSelfReferential ;
+        sh:not [ sh:hasValue true ] ;
+        sh:message "The corrective notice is registered against the same identifier as the work it corrects, so the notice cannot be cited, linked or counted as a separate object." ;
+        sh:severity sh:Warning ;
+    ] .
+
+# R3  A work asserted both retracted and reinstated is contested, not settled.
+sro:ContestedStatusShape a sh:NodeShape ;
+    sh:targetClass sro:ScholarlyWork ;
+    rdfs:label "Layer 3 R3: contradictory statuses must surface as contested"@en ;
+    sh:sparql [
+        sh:message "Registers assert both a retracted and a reinstated status for this work. Consumers must be shown the conflict rather than either status alone." ;
+        sh:severity sh:Warning ;
+        sh:prefixes sro: ;
+        sh:select """
+            SELECT $this WHERE {
+              ?a1 <https://ontology.tesseract.academy/sro/aboutWork> $this ;
+                  <https://ontology.tesseract.academy/sro/hasStatus> <https://ontology.tesseract.academy/sro/retracted> .
+              ?a2 <https://ontology.tesseract.academy/sro/aboutWork> $this ;
+                  <https://ontology.tesseract.academy/sro/hasStatus> <https://ontology.tesseract.academy/sro/reinstated> .
+            }
+        """ ;
+    ] .
+
+# R4  A disagreement must name at least one asserting register.
+sro:DisagreementShape a sh:NodeShape ;
+    sh:targetClass sro:RegisterDisagreement ;
+    rdfs:label "Layer 3 R4: disagreements are fully specified"@en ;
+    sh:property [
+        sh:path sro:concernsWork ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:severity sh:Violation ;
+        sh:message "A disagreement concerns exactly one work." ;
+    ] ;
+    sh:property [
+        sh:path sro:hasDisagreementKind ;
+        sh:minCount 1 ;
+        sh:severity sh:Violation ;
+        sh:message "A disagreement must state its kind." ;
+    ] .
+
+# R5  A propagation signal must be traceable to the assertion that caused it.
+sro:SignalProvenanceShape a sh:NodeShape ;
+    sh:targetClass sro:PropagationSignal ;
+    rdfs:label "Layer 3 R5: no signal without provenance"@en ;
+    sh:property [
+        sh:path sro:signalDerivedFrom ;
+        sh:minCount 1 ;
+        sh:severity sh:Violation ;
+        sh:message "A signal that cannot be traced to a named assertion must not be displayed to a reader." ;
+    ] .

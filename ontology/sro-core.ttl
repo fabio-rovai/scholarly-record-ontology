@@ -1,0 +1,339 @@
+@prefix sro:   <https://ontology.tesseract.academy/sro/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix fabio: <http://purl.org/spar/fabio/> .
+@prefix cito:  <http://purl.org/spar/cito/> .
+@prefix pso:   <http://purl.org/spar/pso/> .
+
+#################################################################
+#  Scholarly Record Ontology (SRO)
+#################################################################
+
+sro: a owl:Ontology ;
+    dcterms:title "Scholarly Record Ontology (SRO)"@en ;
+    dcterms:description """An ontology for the integrity status of the scholarly record.
+
+SRO's central commitment: the retraction status of a work is not a property of
+that work. It is a CLAIM, made by a named register, on a date, with a stated
+basis. Registers disagree with each other at scale, so any model that writes
+retraction as a simple boolean on a work cannot express the actual state of the
+evidence. SRO therefore reifies every integrity claim as an IntegrityAssertion
+attributed to a Register, and provides first-class vocabulary for the
+DISAGREEMENT between registers and for the PROPAGATION of an integrity signal
+to citing works.
+
+The propagation layer is modelled on the citator concept long established in
+legal information retrieval, where a citing reference inherits a graded warning
+from the status of the authority it cites. No equivalent exists in the open
+scholarly graph."""@en ;
+    dcterms:creator "Fabio Rovai" ;
+    dcterms:publisher "Kampakis and Co Ltd t/a The Tesseract Academy" ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    owl:versionInfo "0.1.0" .
+
+#################################################################
+#  Classes
+#################################################################
+
+sro:ScholarlyWork a owl:Class ;
+    rdfs:label "Scholarly Work"@en ;
+    rdfs:comment "A published unit of the scholarly record identified by a persistent identifier, typically a DOI."@en ;
+    skos:closeMatch fabio:Expression .
+
+sro:CorrectiveNotice a owl:Class ;
+    rdfs:subClassOf sro:ScholarlyWork ;
+    rdfs:label "Corrective Notice"@en ;
+    rdfs:comment """A work whose purpose is to correct, retract, withdraw, remove, reinstate or
+raise concern about another work. A corrective notice may or may not carry its
+own identifier: where a publisher registers the correction against the original
+DOI, the notice has no independent identity and cannot be cited, linked or
+counted separately. SRO makes that condition explicit rather than silently
+collapsing it (see sro:isSelfReferential)."""@en ;
+    skos:closeMatch fabio:RetractionNotice .
+
+sro:Register a owl:Class ;
+    rdfs:label "Register"@en ;
+    rdfs:comment "A body that publishes integrity claims about scholarly works. Registers are not authorities of last resort; they are sources whose claims may conflict."@en ;
+    rdfs:subClassOf prov:Agent .
+
+sro:IntegrityAssertion a owl:Class ;
+    rdfs:label "Integrity Assertion"@en ;
+    rdfs:comment """A reified claim, by exactly one Register, that a given work holds a given
+integrity status as of a given date. This is the core class of SRO. Two
+assertions about the same work may carry different statuses, different dates or
+different bases without contradiction at the data layer, because each is
+attributed to its own source."""@en ;
+    rdfs:subClassOf prov:Entity .
+
+sro:RegisterDisagreement a owl:Class ;
+    rdfs:label "Register Disagreement"@en ;
+    rdfs:comment """An observation that two or more registers hold incompatible positions on the
+integrity status of one work, including the case where one register asserts a
+status and another is silent. Silence is a position: a graph that does not flag
+a retracted work will be queried as though the work were sound."""@en .
+
+sro:CitationEvent a owl:Class ;
+    rdfs:label "Citation Event"@en ;
+    rdfs:comment "A citation from one work to another, optionally dated, so that citations occurring after an integrity assertion can be distinguished from those preceding it."@en .
+
+sro:PropagationSignal a owl:Class ;
+    rdfs:label "Propagation Signal"@en ;
+    rdfs:comment """A graded warning attached to a work because of the integrity status of a work
+it cites. The signal is derived, not asserted by a publisher, and its grade
+depends on the status of the cited work and on whether the citation post-dates
+the assertion."""@en .
+
+sro:IntegrityStatus a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Integrity Status"@en .
+
+sro:DisagreementKind a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Disagreement Kind"@en .
+
+sro:SignalGrade a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Signal Grade"@en .
+
+#################################################################
+#  Object properties
+#################################################################
+
+sro:aboutWork a owl:ObjectProperty ;
+    rdfs:label "about work"@en ;
+    rdfs:domain sro:IntegrityAssertion ;
+    rdfs:range sro:ScholarlyWork ;
+    rdfs:comment "The work the assertion is about."@en .
+
+sro:assertedBy a owl:ObjectProperty ;
+    rdfs:label "asserted by"@en ;
+    rdfs:domain sro:IntegrityAssertion ;
+    rdfs:range sro:Register ;
+    rdfs:subPropertyOf prov:wasAttributedTo ;
+    rdfs:comment "The register making the claim. Mandatory: an unattributed integrity claim is not usable evidence."@en .
+
+sro:hasStatus a owl:ObjectProperty ;
+    rdfs:label "has status"@en ;
+    rdfs:domain sro:IntegrityAssertion ;
+    rdfs:range sro:IntegrityStatus .
+
+sro:evidencedByNotice a owl:ObjectProperty ;
+    rdfs:label "evidenced by notice"@en ;
+    rdfs:domain sro:IntegrityAssertion ;
+    rdfs:range sro:CorrectiveNotice .
+
+sro:concernsWork a owl:ObjectProperty ;
+    rdfs:label "concerns work"@en ;
+    rdfs:domain sro:RegisterDisagreement ;
+    rdfs:range sro:ScholarlyWork .
+
+sro:assertingRegister a owl:ObjectProperty ;
+    rdfs:label "asserting register"@en ;
+    rdfs:domain sro:RegisterDisagreement ;
+    rdfs:range sro:Register ;
+    rdfs:comment "A register that asserts a corrective status for the work in question."@en .
+
+sro:silentRegister a owl:ObjectProperty ;
+    rdfs:label "silent register"@en ;
+    rdfs:domain sro:RegisterDisagreement ;
+    rdfs:range sro:Register ;
+    rdfs:comment "A register that holds a record for the work and asserts no corrective status for it. This is the failure mode with the largest practical consequence."@en .
+
+sro:hasDisagreementKind a owl:ObjectProperty ;
+    rdfs:domain sro:RegisterDisagreement ;
+    rdfs:range sro:DisagreementKind .
+
+sro:citingWork a owl:ObjectProperty ;
+    rdfs:domain sro:CitationEvent ;
+    rdfs:range sro:ScholarlyWork .
+
+sro:citedWork a owl:ObjectProperty ;
+    rdfs:domain sro:CitationEvent ;
+    rdfs:range sro:ScholarlyWork ;
+    skos:broadMatch cito:cites .
+
+sro:hasSignal a owl:ObjectProperty ;
+    rdfs:label "has signal"@en ;
+    rdfs:domain sro:ScholarlyWork ;
+    rdfs:range sro:PropagationSignal .
+
+sro:signalGrade a owl:ObjectProperty ;
+    rdfs:domain sro:PropagationSignal ;
+    rdfs:range sro:SignalGrade .
+
+sro:signalDerivedFrom a owl:ObjectProperty ;
+    rdfs:label "signal derived from"@en ;
+    rdfs:domain sro:PropagationSignal ;
+    rdfs:range sro:IntegrityAssertion ;
+    rdfs:comment "The assertion that gave rise to the signal. A signal with no traceable assertion is not auditable and must not be displayed to a reader."@en .
+
+#################################################################
+#  Datatype properties
+#################################################################
+
+sro:doi a owl:DatatypeProperty ;
+    rdfs:domain sro:ScholarlyWork ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Normalised lower-case DOI without resolver prefix."@en .
+
+sro:assertedDate a owl:DatatypeProperty ;
+    rdfs:domain sro:IntegrityAssertion ;
+    rdfs:range xsd:date .
+
+sro:publicationDate a owl:DatatypeProperty ;
+    rdfs:domain sro:ScholarlyWork ;
+    rdfs:range xsd:date .
+
+sro:sourceRecordId a owl:DatatypeProperty ;
+    rdfs:domain sro:IntegrityAssertion ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The register's own record identifier, so every assertion can be traced back to the source row that produced it."@en .
+
+sro:rawStatusLabel a owl:DatatypeProperty ;
+    rdfs:domain sro:IntegrityAssertion ;
+    rdfs:range xsd:string ;
+    rdfs:comment """The status string exactly as published by the register, before mapping to the
+SRO vocabulary. Retained deliberately: the raw strings in production metadata
+include misspellings and undocumented values, and normalising them away destroys
+the evidence that the vocabulary is uncontrolled."""@en .
+
+sro:isSelfReferential a owl:DatatypeProperty ;
+    rdfs:domain sro:IntegrityAssertion ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "True where the corrective notice is registered against the same identifier as the work it corrects, leaving the notice with no independent identity."@en .
+
+sro:citationYear a owl:DatatypeProperty ;
+    rdfs:domain sro:CitationEvent ;
+    rdfs:range xsd:gYear .
+
+sro:postDatesAssertion a owl:DatatypeProperty ;
+    rdfs:domain sro:CitationEvent ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "True where the citation occurred after the integrity assertion it should have respected."@en .
+
+#################################################################
+#  Registers (individuals)
+#################################################################
+
+sro:CrossrefRegister a sro:Register, owl:NamedIndividual ;
+    skos:prefLabel "Crossref"@en ;
+    rdfs:comment "Corrective status expressed through the update-to structure on the asserting record."@en .
+
+sro:RetractionWatchRegister a sro:Register, owl:NamedIndividual ;
+    skos:prefLabel "Retraction Watch"@en ;
+    rdfs:comment "Curated database, acquired by Crossref in September 2023 and published openly."@en .
+
+sro:OpenAlexRegister a sro:Register, owl:NamedIndividual ;
+    skos:prefLabel "OpenAlex"@en ;
+    rdfs:comment "Corrective status expressed as a single boolean, is_retracted, with no attribution, date or basis."@en .
+
+sro:PubMedRegister a sro:Register, owl:NamedIndividual ;
+    skos:prefLabel "PubMed"@en .
+
+#################################################################
+#  Integrity status vocabulary
+#################################################################
+
+sro:IntegrityStatusScheme a skos:ConceptScheme ;
+    skos:prefLabel "SRO Integrity Status Scheme"@en ;
+    rdfs:comment "A controlled vocabulary for corrective states, covering states that existing scholarly vocabularies leave unmodelled."@en .
+
+sro:retracted a sro:IntegrityStatus, owl:NamedIndividual ;
+    skos:inScheme sro:IntegrityStatusScheme ;
+    skos:prefLabel "retracted"@en ;
+    skos:definition "The work has been withdrawn from the record by the publisher or authors and should not be relied upon."@en ;
+    skos:closeMatch pso:retracted-from-publication .
+
+sro:partially-retracted a sro:IntegrityStatus, owl:NamedIndividual ;
+    skos:inScheme sro:IntegrityStatusScheme ;
+    skos:prefLabel "partially retracted"@en ;
+    skos:definition "Part of the work is withdrawn while the remainder stands. Present in production metadata; absent from existing scholarly ontologies."@en .
+
+sro:expression-of-concern a sro:IntegrityStatus, owl:NamedIndividual ;
+    skos:inScheme sro:IntegrityStatusScheme ;
+    skos:prefLabel "expression of concern"@en ;
+    skos:definition """A formal signal that the reliability of the work is in question without a
+retraction having been made. This status has no counterpart in the SPAR
+ontologies: the string does not occur in FaBiO, CiTO, PSO, PRO, SCoRO or DEO."""@en .
+
+sro:corrected a sro:IntegrityStatus, owl:NamedIndividual ;
+    skos:inScheme sro:IntegrityStatusScheme ;
+    skos:prefLabel "corrected"@en ;
+    skos:definition "The work stands, with a correction issued against it."@en .
+
+sro:withdrawn a sro:IntegrityStatus, owl:NamedIndividual ;
+    skos:inScheme sro:IntegrityStatusScheme ;
+    skos:prefLabel "withdrawn"@en .
+
+sro:removed a sro:IntegrityStatus, owl:NamedIndividual ;
+    skos:inScheme sro:IntegrityStatusScheme ;
+    skos:prefLabel "removed"@en ;
+    skos:definition "The work has been taken down, typically for legal reasons, and the content is no longer available."@en .
+
+sro:reinstated a sro:IntegrityStatus, owl:NamedIndividual ;
+    skos:inScheme sro:IntegrityStatusScheme ;
+    skos:prefLabel "reinstated"@en ;
+    skos:definition """A prior corrective status has been reversed and the work restored. Unmodelled
+in existing scholarly vocabularies, which treat retraction as terminal. A record
+that cannot express reinstatement will libel the authors of works that were
+cleared."""@en .
+
+sro:contested a sro:IntegrityStatus, owl:NamedIndividual ;
+    skos:inScheme sro:IntegrityStatusScheme ;
+    skos:prefLabel "contested"@en ;
+    skos:definition "Registers hold incompatible statuses for the work. Derived, never asserted by a publisher."@en .
+
+#################################################################
+#  Disagreement kinds
+#################################################################
+
+sro:DisagreementKindScheme a skos:ConceptScheme ;
+    skos:prefLabel "SRO Disagreement Kind Scheme"@en .
+
+sro:silent-omission a sro:DisagreementKind, owl:NamedIndividual ;
+    skos:inScheme sro:DisagreementKindScheme ;
+    skos:prefLabel "silent omission"@en ;
+    skos:definition "One register asserts a corrective status; another holds a record for the same work and asserts nothing."@en .
+
+sro:status-conflict a sro:DisagreementKind, owl:NamedIndividual ;
+    skos:inScheme sro:DisagreementKindScheme ;
+    skos:prefLabel "status conflict"@en ;
+    skos:definition "Registers assert different, incompatible corrective statuses for the same work."@en .
+
+sro:date-conflict a sro:DisagreementKind, owl:NamedIndividual ;
+    skos:inScheme sro:DisagreementKindScheme ;
+    skos:prefLabel "date conflict"@en ;
+    skos:definition "Registers agree on status but disagree on when it took effect, which changes which citations post-date it."@en .
+
+sro:absent-from-register a sro:DisagreementKind, owl:NamedIndividual ;
+    skos:inScheme sro:DisagreementKindScheme ;
+    skos:prefLabel "absent from register"@en ;
+    skos:definition "The work is not present in the comparison register at all, so its status there is undefined rather than negative."@en .
+
+#################################################################
+#  Signal grades
+#################################################################
+
+sro:SignalGradeScheme a skos:ConceptScheme ;
+    skos:prefLabel "SRO Signal Grade Scheme"@en ;
+    rdfs:comment "Grades are deliberately few and defined by the status of the cited work, not by editorial judgement."@en .
+
+sro:signal-severe a sro:SignalGrade, owl:NamedIndividual ;
+    skos:inScheme sro:SignalGradeScheme ;
+    skos:prefLabel "severe"@en ;
+    skos:definition "The work cites a retracted work, and the citation post-dates the retraction."@en .
+
+sro:signal-caution a sro:SignalGrade, owl:NamedIndividual ;
+    skos:inScheme sro:SignalGradeScheme ;
+    skos:prefLabel "caution"@en ;
+    skos:definition "The work cites a retracted work, but the citation pre-dates the retraction, or cites a work under an expression of concern."@en .
+
+sro:signal-contested a sro:SignalGrade, owl:NamedIndividual ;
+    skos:inScheme sro:SignalGradeScheme ;
+    skos:prefLabel "contested"@en ;
+    skos:definition "The work cites a work whose status registers dispute. The reader is told that the evidence conflicts rather than being given false certainty either way."@en .
