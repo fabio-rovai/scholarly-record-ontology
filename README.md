@@ -256,6 +256,44 @@ defects in the data model.
 
 ---
 
+## Related work
+
+This sits alongside an existing quantitative literature rather than ahead of it.
+
+Jonas Oppenlaender, *How Ten Publishers Retract Research*
+([arXiv:2602.19197](https://arxiv.org/abs/2602.19197), February 2026), analyses
+46,087 retractions in the Retraction Watch database and reports retraction rates
+per publisher: Hindawi 320.02 per 10,000 published, IOS Press 283.77, PLoS 26.82,
+IEEE 17.70, Springer Nature 9.06, and Elsevier lowest of the ten at 3.97. That
+work measures **who retracts**. This project measures **whether the registers
+agree that a retraction happened at all**, and whether anything propagates the
+result. Different questions over the same corpus.
+
+One of its findings bears directly on the ontology. Of 98 articles reinstated
+following retraction, 86 were published in Elsevier journals. Reinstatement is a
+real state occurring at measurable scale, and Retraction Watch records 160 such
+cases. It is also a state no existing scholarly vocabulary can express: the
+string does not occur in CiTO, FaBiO, PSO, PRO, SCoRO or DEO. A record that
+models retraction as terminal will keep a warning against work that has been
+cleared, which harms named authors.
+
+A caution on reading Elsevier's low rate: it is equally consistent with a cleaner
+corpus and with more conservative retraction practice, and pairing it with the
+highest reinstatement share is what makes it interesting rather than settled. The
+narrower claim from this project's own data is that where Elsevier does retract,
+98.9% of those papers carry a corresponding Crossref assertion.
+
+**Corporate reporting context.** The word "retract" does not appear anywhere in
+the 252 pages of the RELX 2025 Annual Report, nor in its Form 20-F for the same
+year, though research integrity is disclosed as a formal risk factor. The same
+Annual Report places "Knowledge Graphs" in the grounding layer of its generative
+AI diagram, on an axis labelled "Decreasing hallucination, irrelevant content,
+non-attributable content (lack of citations)", and describes Elsevier products
+using "hybrid search, knowledge graphs, ontologies". The mechanism is company
+policy; the measurement of it is not published.
+
+---
+
 ## Licence
 
 Ontology, shapes, queries and code: **MIT**. Documentation and derived findings:
