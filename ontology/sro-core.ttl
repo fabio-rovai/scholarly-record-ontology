@@ -235,6 +235,14 @@ sro:OpenAlexRegister a sro:Register, owl:NamedIndividual ;
 sro:PubMedRegister a sro:Register, owl:NamedIndividual ;
     skos:prefLabel "PubMed"@en .
 
+sro:EuropePMCRegister a sro:Register, owl:NamedIndividual ;
+    skos:prefLabel "Europe PMC"@en ;
+    rdfs:comment """Corrective status expressed through MEDLINE publication types, which
+distinguish "Retracted Publication" (the withdrawn work) from "Retraction of
+Publication" (the notice announcing it). Europe PMC is the control case for this
+project: it demonstrates that preserving the distinction between a retracted work
+and the notice that retracts it is achievable in a production register."""@en .
+
 #################################################################
 #  Integrity status vocabulary
 #################################################################

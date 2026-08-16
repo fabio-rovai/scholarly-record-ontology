@@ -16,6 +16,9 @@ the assumption that a reader wants to attack the figures.
 | OpenAlex retracted | `api.openalex.org/works?filter=is_retracted:true` cursor-paged | 107,200 of 134,094 (80.0%) | **incomplete, see §3** |
 | OpenAlex DOI probe | batched `filter=doi:a\|b\|…` over Retraction Watch DOIs | 18,717 of 62,708 (29.8%) | **incomplete, see §3** |
 | SPAR ontologies | `purl.org/spar/{cito,fabio,pso,pro,scoro,deo}` via content negotiation | 6 files, all parsed | **complete** |
+| Europe PMC retracted | `ebi.ac.uk/europepmc/.../search?query=PUB_TYPE:"Retracted Publication"` | 33,893 records | **complete** |
+| Europe PMC notices | same, `PUB_TYPE:"Retraction of Publication"` | 20,424 records | **complete** |
+| OpenCitations citations | `opencitations.net/index/api/v1/citations/{doi}` | 391 of 400 works | **sampled, see §10** |
 
 ## 2. Retraction Watch composition
 
@@ -163,7 +166,39 @@ includes the date. This was a genuine modelling error caught by the shapes.
   open record is what most downstream tooling actually consumes.
 - PubMed and Europe PMC as a fourth register. Feasible and free; not yet built.
 
-## 9. Known limitations
+## 10. Europe PMC and the propagation layer
+
+**Europe PMC** was added specifically as a control. It is free, unmetered and
+cursor-paged, and it carries separate MEDLINE publication types for the retracted
+work and for the notice. It is therefore an independent source of notice DOIs,
+which removes the objection that the OpenAlex category-error finding depends on
+Retraction Watch's own notice column. Both harvests are complete. 631 of the
+retracted records and 621 of the notice records carry no DOI and are excluded
+from DOI-based comparisons.
+
+Europe PMC's own two sets overlap on 64 DOIs (0.32% of notices), so it is not
+itself free of the conflation, merely close to it. That figure is reported rather
+than rounded to zero.
+
+**The propagation layer** is a deliberate sample, not a census, and the sampling
+is not neutral:
+
+1. Only the **400 most-cited** retracted works were processed. Ranking uses
+   OpenAlex `cited_by_count`, which comes from the 80%-complete harvest, so
+   selection is biased toward works OpenAlex both knows and rates highly.
+2. 391 of 400 returned citation data. The 9 failures were mostly
+   `IncompleteRead` errors on the very largest citation lists, which means the
+   losses are concentrated among the *most*-cited works. The severe-signal count
+   is therefore an undercount, biased against the biggest cases.
+3. 27,455 of 176,623 citations carry no usable creation date and are excluded
+   from grading rather than guessed at.
+4. Grading compares year and month only. A citation in the same month as the
+   retraction is graded `caution`, which is the conservative direction.
+
+Reported: 43,683 severe signals, 105,485 caution, 29.28% of dated citations
+severe, 42,784 distinct citing works that would carry a red flag.
+
+## 11. Known limitations
 
 - DOI matching is exact after normalisation (lower-cased, resolver prefix and
   `doi:` stripped). Registrant-side DOI variance is not reconciled.

@@ -208,6 +208,41 @@ def main():
                 w.t(wu, SRO + "publicationDate",
                     w.lit(f"{it['publication_year']}-01-01", "date"), keep)
 
+    # ---------- Europe PMC assertions ----------
+    epmc_flagged = set()
+    for fname, cls in (("europepmc_retracted.jsonl", "ScholarlyWork"),
+                       ("europepmc_notices.jsonl", "CorrectiveNotice")):
+        path = os.path.join(RAW, fname)
+        if not os.path.exists(path):
+            continue
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                try:
+                    it = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                d = norm_doi(it.get("doi"))
+                if not d:
+                    continue
+                keep = d in keep_doi
+                wu = BASE + "work/" + slug(d)
+                if cls == "CorrectiveNotice" and d not in notices:
+                    notices.add(d)
+                    w.t(wu, RDFT, f"<{SRO}CorrectiveNotice>", keep)
+                    w.t(wu, SRO + "doi", w.lit(d), keep)
+                elif cls == "ScholarlyWork":
+                    epmc_flagged.add(d)
+                    if d not in works:
+                        works.add(d)
+                        w.t(wu, RDFT, f"<{SRO}ScholarlyWork>", keep)
+                        w.t(wu, SRO + "doi", w.lit(d), keep)
+                    au = BASE + "assertion/epmc/" + slug(d) + "/retracted"
+                    w.t(au, RDFT, f"<{SRO}IntegrityAssertion>", keep)
+                    w.t(au, SRO + "aboutWork", f"<{wu}>", keep)
+                    w.t(au, SRO + "assertedBy", f"<{SRO}EuropePMCRegister>", keep)
+                    w.t(au, SRO + "hasStatus", f"<{SRO}retracted>", keep)
+                    w.t(au, SRO + "rawStatusLabel", w.lit("Retracted Publication"), keep)
+
     # ---------- Disagreements (computed set-based) ----------
     rw_retr = {d for d, s in rw_status.items() if "retracted" in s}
     cr_retr = {d for d, s in cr_status.items() if "retracted" in s}

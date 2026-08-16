@@ -1,0 +1,32 @@
+{
+  "epmc_retracted_records": 33893,
+  "epmc_notice_records": 20424,
+  "epmc_retracted_with_doi": 33262,
+  "epmc_notices_with_doi": 19803,
+  "epmc_selfconflation_overlap": 64,
+  "epmc_selfconflation_pct_of_notices": 0.32,
+  "register_sizes": {
+    "retraction_watch": 60247,
+    "crossref": 78907,
+    "openalex": 106270,
+    "europepmc": 33262
+  },
+  "epmc_also_in": {
+    "retraction_watch": 27103,
+    "crossref": 31056,
+    "openalex": 32524,
+    "none_of_the_three": 130
+  },
+  "epmc_only_pct": 0.39,
+  "control_epmc_notices_flagged_by_openalex": 10130,
+  "control_epmc_notices_flagged_pct": 51.15,
+  "control_epmc_notices_asserted_retracted_by_crossref": 181,
+  "control_epmc_notices_pct_crossref": 0.91,
+  "control_epmc_notices_in_rw_original_column": 70,
+  "control_epmc_notices_pct_rw": 0.35,
+  "four_register_union": 114048,
+  "four_register_agreement": 26119,
+  "four_register_agreement_pct": 22.9,
+  "asserted_by_exactly_one": 37785,
+  "asserted_by_exactly_one_pct": 33.13
+}

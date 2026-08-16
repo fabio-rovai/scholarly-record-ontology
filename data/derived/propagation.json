@@ -1,0 +1,173 @@
+{
+  "works_requested": 400,
+  "works_with_citation_data": 391,
+  "citations_examined": 176623,
+  "severe_signals": 43683,
+  "caution_signals": 105485,
+  "undated_citations": 27455,
+  "severe_pct_of_dated": 29.28,
+  "distinct_citing_works_carrying_severe": 42784,
+  "triples": 1450797,
+  "worst_works": [
+    {
+      "doi": "10.1056/nejmoa1200303",
+      "journal": "NEJM: The New England Journal of Medicine",
+      "retraction_date": "2018-06-13",
+      "citations": 3854,
+      "severe": 1251,
+      "caution": 1946
+    },
+    {
+      "doi": "10.1016/s0140-6736(97)11096-0",
+      "journal": "Lancet",
+      "retraction_date": "2010-02-06",
+      "citations": 2356,
+      "severe": 1171,
+      "caution": 623
+    },
+    {
+      "doi": "10.1126/science.1097243",
+      "journal": "Science",
+      "retraction_date": "2007-10-26",
+      "citations": 1741,
+      "severe": 1120,
+      "caution": 239
+    },
+    {
+      "doi": "10.7554/elife.12248",
+      "journal": "eLife",
+      "retraction_date": "2018-04-12",
+      "citations": 1233,
+      "severe": 1071,
+      "caution": 129
+    },
+    {
+      "doi": "10.1016/j.eng.2020.03.007",
+      "journal": "Engineering",
+      "retraction_date": "2020-04-01",
+      "citations": 1059,
+      "severe": 890,
+      "caution": 17
+    },
+    {
+      "doi": "10.1056/nejmoa2007621",
+      "journal": "NEJM: The New England Journal of Medicine",
+      "retraction_date": "2020-06-04",
+      "citations": 1147,
+      "severe": 833,
+      "caution": 130
+    },
+    {
+      "doi": "10.1016/s0140-6736(20)32656-8",
+      "journal": "Lancet",
+      "retraction_date": "2023-06-09",
+      "citations": 4047,
+      "severe": 825,
+      "caution": 2549
+    },
+    {
+      "doi": "10.4103/0974-1208.82352",
+      "journal": "Journal of Human Reproductive Sciences",
+      "retraction_date": "2017-01-01",
+      "citations": 918,
+      "severe": 693,
+      "caution": 82
+    },
+    {
+      "doi": "10.1016/s0140-6736(20)31180-6",
+      "journal": "Lancet",
+      "retraction_date": "2020-06-05",
+      "citations": 806,
+      "severe": 611,
+      "caution": 70
+    },
+    {
+      "doi": "10.1016/s0006-291x(02)00422-9",
+      "journal": "Biochemical and Biophysical Research Communications (BBRC)",
+      "retraction_date": "2005-06-06",
+      "citations": 790,
+      "severe": 575,
+      "caution": 18
+    },
+    {
+      "doi": "10.1155/2014/943162",
+      "journal": "Cardiology Research and Practice",
+      "retraction_date": "2019-03-06",
+      "citations": 1491,
+      "severe": 562,
+      "caution": 654
+    },
+    {
+      "doi": "10.1046/j.1365-313x.2003.01676.x",
+      "journal": "The Plant Journal",
+      "retraction_date": "2015-11-13",
+      "citations": 1556,
+      "severe": 542,
+      "caution": 879
+    },
+    {
+      "doi": "10.1021/nn900887m",
+      "journal": "ACS Nano",
+      "retraction_date": "2012-08-20",
+      "citations": 948,
+      "severe": 537,
+      "caution": 48
+    },
+    {
+      "doi": "10.1001/jamainternmed.2018.3713",
+      "journal": "JAMA Internal Medicine",
+      "retraction_date": "2020-05-18",
+      "citations": 846,
+      "severe": 537,
+      "caution": 175
+    },
+    {
+      "doi": "10.5465/amj.2009.43670902",
+      "journal": "Academy of Management Journal",
+      "retraction_date": "2013-12-01",
+      "citations": 690,
+      "severe": 458,
+      "caution": 151
+    },
+    {
+      "doi": "10.1158/0008-5472.can-04-4194",
+      "journal": "Cancer Research",
+      "retraction_date": "2010-08-15",
+      "citations": 959,
+      "severe": 439,
+      "caution": 301
+    },
+    {
+      "doi": "10.15585/mmwr.ss6513a1",
+      "journal": "Morbidity and Mortality Weekly Report (MMWR)",
+      "retraction_date": "2018-11-16",
+      "citations": 439,
+      "severe": 364,
+      "caution": 7
+    },
+    {
+      "doi": "10.1155/2014/150845",
+      "journal": "BioMed Research International",
+      "retraction_date": "2020-08-30",
+      "citations": 968,
+      "severe": 347,
+      "caution": 456
+    },
+    {
+      "doi": "10.1186/s13578-020-00416-0",
+      "journal": "Cell & Bioscience",
+      "retraction_date": "2021-08-06",
+      "citations": 514,
+      "severe": 341,
+      "caution": 94
+    },
+    {
+      "doi": "10.1001/jama.2018.12615",
+      "journal": "JAMA: Journal of the American Medical Association",
+      "retraction_date": "2019-03-26",
+      "citations": 401,
+      "severe": 340,
+      "caution": 9
+    }
+  ]
+}

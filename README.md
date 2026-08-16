@@ -68,6 +68,32 @@ integrity dashboard, a bibliometric study, a retrieval-augmented language model)
 receives the corrective apparatus of science mixed in with the corrupted
 literature, and cannot tell them apart.
 
+**The control test.** It would be unfair to conclude from Retraction Watch's own
+notice column that OpenAlex is uniquely at fault, so I added a fourth register
+that identifies notices independently. Europe PMC carries two distinct MEDLINE
+publication types, "Retracted Publication" for the withdrawn paper and
+"Retraction of Publication" for the notice. Taking Europe PMC's 19,803 notice
+DOIs and asking each register what it says about them:
+
+| Register | Notice DOIs it treats as retracted research |
+|---|---|
+| **OpenAlex** | **10,130 (51.15%)** |
+| Crossref | 181 (0.91%) |
+| Retraction Watch | 70 (0.35%) |
+| Europe PMC itself | 64 (0.32%) |
+
+Three registers keep the categories apart. One does not. Preserving the
+distinction is plainly achievable in production, which is what makes this a
+design defect rather than an inherent difficulty. The OpenAlex figure is a floor,
+because that harvest is 80% complete.
+
+### 2b. Four registers, and only 22.9% agreement
+
+With Europe PMC added, 114,048 DOIs are asserted retracted by at least one of the
+four registers. Only **26,119 (22.9%)** are asserted by all four. **33.13%** rest
+on a single register's say-so and would vanish from the record if you happened to
+consult a different one.
+
 ### 3. The corrective vocabulary is uncontrolled
 
 Crossref's `update-type` is the field the scholarly record uses to say what kind
@@ -98,11 +124,36 @@ belongs to [10.3892/etm.2024.12720](https://doi.org/10.3892/etm.2024.12720)
 object: it cannot be cited, linked to, or counted on its own. SRO records this
 explicitly rather than silently collapsing it (`sro:isSelfReferential`).
 
-### 5. Retracted work keeps being cited
+### 5. Retracted work keeps being cited, and nothing warns anyone
 
 **291,177** citations to retracted works occurred in years after the retraction
 date, across **35,261** distinct retracted works. This is a **lower bound**, see
 the build report for why.
+
+To show what a citator would actually do with that, the propagation layer is
+populated for the 400 most-cited retracted works using citation edges from
+OpenCitations. Of 176,623 citations examined across 391 works with data:
+
+| | |
+|---|---|
+| Citations post-dating the retraction (`severe`) | **43,683** |
+| Citations pre-dating it (`caution`) | 105,485 |
+| Severe as a share of dated citations | **29.28%** |
+| Distinct citing works that would carry a red flag | **42,784** |
+
+The works generating the most severe signals are not obscure:
+
+| Retracted work | Retracted | Citations after |
+|---|---|---|
+| [10.1056/nejmoa1200303](https://doi.org/10.1056/nejmoa1200303) PREDIMED Mediterranean diet trial, *NEJM* | 2018-06-13 | 1,251 |
+| [10.1016/s0140-6736(97)11096-0](https://doi.org/10.1016/s0140-6736(97)11096-0) Wakefield, *Lancet*, retracted for falsification | 2010-02-06 | **1,171** |
+| [10.1126/science.1097243](https://doi.org/10.1126/science.1097243) Visfatin, *Science* | 2007-10-26 | 1,120 |
+| [10.1056/nejmoa2007621](https://doi.org/10.1056/nejmoa2007621) Surgisphere COVID-19 paper, *NEJM* | 2020-06-04 | 833 |
+
+The second row is the paper that launched the modern anti-vaccination movement,
+retracted in 2010 for data falsification. It has been cited 1,171 times since,
+and not one of those citations carries a machine-readable warning, because no
+layer of the open scholarly record emits one.
 
 ### 6. A null result, stated plainly
 
@@ -156,15 +207,20 @@ post-dates the assertion.
 ## Contents
 
 ```
-ontology/sro-core.ttl        The ontology. 224 triples, 10 classes, 13 object
-                             properties, 8 datatype properties, 19 individuals.
+ontology/sro-core.ttl        The ontology. 228 triples, 10 classes, 13 object
+                             properties, 8 datatype properties, 20 individuals.
 shapes/sro-shapes.ttl        SHACL in three layers: structural, value, coherence.
 queries/README.md            Six worked SPARQL queries.
-scripts/01..05               The pipeline, from live fetch to RDF.
-data/graph/sro-instances.nt.gz  2,740,005 triples: 119,327 works, 57,943
-                             corrective notices, 58,390 recorded disagreements.
+scripts/01..08               The pipeline, from live fetch to RDF.
+data/graph/sro-instances.nt.gz   2,912,149 triples: 119,456 works, 60,637
+                             corrective notices, 58,432 recorded disagreements,
+                             across four registers.
+data/graph/sro-propagation.nt.gz 1,450,797 triples: citation events and graded
+                             propagation signals.
 data/graph/sro-example.ttl   Readable subgraph for review.
-data/derived/findings.json   Every computed figure in this README.
+data/derived/findings.json               Three-register figures.
+data/derived/findings_four_register.json Europe PMC control test.
+data/derived/propagation.json            Signal counts and worst cases.
 BUILD_REPORT.md              What was fetched, what was computed, what could not
                              be obtained, and every caveat.
 ```
@@ -178,6 +234,9 @@ python3 scripts/02_fetch_openalex_retracted.py     # metered, see build report
 python3 scripts/03_probe_openalex_for_rw_dois.py   # resumable
 python3 scripts/04_analyse_registers.py            # findings.json
 python3 scripts/05_build_graph.py                  # the RDF graph
+python3 scripts/06_fetch_europepmc.py              # fourth register, unmetered
+python3 scripts/07_build_propagation.py            # citator layer via OpenCitations
+python3 scripts/08_analyse_four_registers.py       # the control test
 ```
 
 Raw data is not committed: it is 502 MB and fully regenerable by the scripts
