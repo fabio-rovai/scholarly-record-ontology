@@ -46,26 +46,26 @@
   "crossref_retractive_assertions": 122245,
   "crossref_self_referential_assertions": 31449,
   "crossref_self_referential_pct": 25.73,
-  "openalex_retracted_records": 107169,
-  "openalex_retracted_with_doi": 106270,
-  "openalex_retracted_without_doi": 899,
+  "openalex_retracted_records": 134081,
+  "openalex_retracted_with_doi": 132983,
+  "openalex_retracted_without_doi": 1098,
   "venn": {
-    "rw_only": 755,
-    "cr_only": 5387,
-    "oa_only": 33213,
-    "rw_cr_not_oa": 1506,
-    "rw_oa_not_cr": 1043,
-    "cr_oa_not_rw": 15071,
-    "all_three": 56943,
-    "union": 113918
+    "rw_only": 744,
+    "cr_only": 3348,
+    "oa_only": 56517,
+    "rw_cr_not_oa": 147,
+    "rw_oa_not_cr": 1054,
+    "cr_oa_not_rw": 17110,
+    "all_three": 58302,
+    "union": 137222
   },
-  "agreement_pct_of_union": 49.99,
-  "probe_total": 18717,
-  "probe_found_in_openalex": 18705,
+  "agreement_pct_of_union": 42.49,
+  "probe_total": 20791,
+  "probe_found_in_openalex": 20779,
   "probe_absent_from_openalex": 12,
-  "silent_failures": 18,
-  "silent_failure_pct_of_found": 0.1,
-  "silent_failure_citations_total": 103,
+  "silent_failures": 22,
+  "silent_failure_pct_of_found": 0.11,
+  "silent_failure_citations_total": 113,
   "silent_failure_top_cited": [
     {
       "doi": "10.33263/briac94.979986",
@@ -88,6 +88,11 @@
       "publisher": "Springer Nature"
     },
     {
+      "doi": "10.58209/neurolife.2023.09",
+      "cited_by_count": 5,
+      "publisher": null
+    },
+    {
       "doi": "10.14254/2071-8330.2021/14-3/11",
       "cited_by_count": 4,
       "publisher": "Centre of Sociological Research, Ternopil, Ukraine"
@@ -101,6 +106,16 @@
       "doi": "10.1007/978-3-030-00524-5_6",
       "cited_by_count": 3,
       "publisher": "Springer Nature"
+    },
+    {
+      "doi": "10.58209/neurolife.2023.31",
+      "cited_by_count": 3,
+      "publisher": null
+    },
+    {
+      "doi": "10.48550/arxiv.2402.08303",
+      "cited_by_count": 2,
+      "publisher": "Cornell University"
     },
     {
       "doi": "10.1557/jmr.2005.0004",
@@ -126,31 +141,18 @@
       "doi": "10.1088/1402-4896/ada2c0",
       "cited_by_count": 0,
       "publisher": "IOP Publishing"
-    },
-    {
-      "doi": "10.1088/1402-4896/ada3f8",
-      "cited_by_count": 0,
-      "publisher": "IOP Publishing"
-    },
-    {
-      "doi": "10.21275/mr241114172224",
-      "cited_by_count": 0,
-      "publisher": null
-    },
-    {
-      "doi": "10.1166/asem.2014.1544",
-      "cited_by_count": 0,
-      "publisher": "American Scientific Publishers"
     }
   ],
   "silent_failure_by_publisher": {
-    "UNKNOWN": 8,
+    "UNKNOWN": 10,
     "Springer Nature": 4,
     "IOP Publishing": 2,
     "American Scientific Publishers": 1,
     "Centre of Sociological Research, Ternopil, Ukraine": 1,
     "IOS Press": 1,
-    "Elsevier BV": 1
+    "Elsevier BV": 1,
+    "Cornell University": 1,
+    "Cambridge University Press": 1
   },
   "silent_failure_relx": 1,
   "post_retraction_citations_total": 291177,
@@ -271,9 +273,9 @@
   "rw_retractions_total_records": 66287,
   "rw_relx_pct": 10.78,
   "relx_retracted_dois": 7101,
-  "relx_flagged_in_openalex": 7010,
+  "relx_flagged_in_openalex": 7090,
   "relx_flagged_in_crossref": 7034,
-  "relx_openalex_coverage_pct": 98.72,
+  "relx_openalex_coverage_pct": 99.85,
   "relx_crossref_coverage_pct": 99.06,
   "publisher_propagation_table": [
     {
@@ -304,9 +306,9 @@
       "publisher": "SAGE Publications",
       "retracted_dois": 1229,
       "in_crossref": 1172,
-      "in_openalex": 1208,
+      "in_openalex": 1225,
       "crossref_pct": 95.4,
-      "openalex_pct": 98.3
+      "openalex_pct": 99.7
     },
     {
       "publisher": "American Society for Biochemistry and Molecular Biology (ASBMB)",
@@ -320,57 +322,57 @@
       "publisher": "Oxford University Press",
       "retracted_dois": 526,
       "in_crossref": 507,
-      "in_openalex": 508,
+      "in_openalex": 516,
       "crossref_pct": 96.4,
-      "openalex_pct": 96.6
+      "openalex_pct": 98.1
     },
     {
       "publisher": "De Gruyter",
       "retracted_dois": 267,
       "in_crossref": 262,
-      "in_openalex": 263,
+      "in_openalex": 264,
       "crossref_pct": 98.1,
-      "openalex_pct": 98.5
+      "openalex_pct": 98.9
     },
     {
       "publisher": "Wolters Kluwer - Lippincott Williams & Wilkins",
       "retracted_dois": 311,
       "in_crossref": 306,
-      "in_openalex": 305,
+      "in_openalex": 308,
       "crossref_pct": 98.4,
-      "openalex_pct": 98.1
+      "openalex_pct": 99.0
     },
     {
       "publisher": "Wiley",
       "retracted_dois": 4059,
       "in_crossref": 4003,
-      "in_openalex": 3949,
+      "in_openalex": 3986,
       "crossref_pct": 98.6,
-      "openalex_pct": 97.3
+      "openalex_pct": 98.2
     },
     {
       "publisher": "Elsevier",
       "retracted_dois": 6254,
       "in_crossref": 6188,
-      "in_openalex": 6187,
+      "in_openalex": 6243,
       "crossref_pct": 98.9,
-      "openalex_pct": 98.9
+      "openalex_pct": 99.8
     },
     {
       "publisher": "Cureus (Part of Springer Nature as of December 2022)",
       "retracted_dois": 218,
       "in_crossref": 216,
-      "in_openalex": 183,
+      "in_openalex": 216,
       "crossref_pct": 99.1,
-      "openalex_pct": 83.9
+      "openalex_pct": 99.1
     },
     {
       "publisher": "Taylor and Francis",
       "retracted_dois": 1658,
       "in_crossref": 1643,
-      "in_openalex": 1627,
+      "in_openalex": 1633,
       "crossref_pct": 99.1,
-      "openalex_pct": 98.1
+      "openalex_pct": 98.5
     },
     {
       "publisher": "Spandidos",
@@ -400,17 +402,17 @@
       "publisher": "American Chemical Society (ACS)",
       "retracted_dois": 382,
       "in_crossref": 381,
-      "in_openalex": 377,
+      "in_openalex": 381,
       "crossref_pct": 99.7,
-      "openalex_pct": 98.7
+      "openalex_pct": 99.7
     },
     {
       "publisher": "Frontiers",
       "retracted_dois": 688,
       "in_crossref": 686,
-      "in_openalex": 679,
+      "in_openalex": 686,
       "crossref_pct": 99.7,
-      "openalex_pct": 98.7
+      "openalex_pct": 99.7
     },
     {
       "publisher": "IEEE: Institute of Electrical and Electronics Engineers",
@@ -424,41 +426,41 @@
       "publisher": "Springer",
       "retracted_dois": 4442,
       "in_crossref": 4427,
-      "in_openalex": 4323,
+      "in_openalex": 4437,
       "crossref_pct": 99.7,
-      "openalex_pct": 97.3
+      "openalex_pct": 99.9
     },
     {
       "publisher": "IOP Publishing",
       "retracted_dois": 1284,
       "in_crossref": 1281,
-      "in_openalex": 1278,
+      "in_openalex": 1284,
       "crossref_pct": 99.8,
-      "openalex_pct": 99.5
+      "openalex_pct": 100.0
     },
     {
       "publisher": "Springer - Nature Publishing Group",
       "retracted_dois": 3110,
       "in_crossref": 3105,
-      "in_openalex": 3011,
+      "in_openalex": 3105,
       "crossref_pct": 99.8,
-      "openalex_pct": 96.8
+      "openalex_pct": 99.8
     },
     {
       "publisher": "Taylor and Francis - Dove Press",
       "retracted_dois": 570,
       "in_crossref": 569,
-      "in_openalex": 567,
+      "in_openalex": 570,
       "crossref_pct": 99.8,
-      "openalex_pct": 99.5
+      "openalex_pct": 100.0
     },
     {
       "publisher": "Elsevier - Cell Press",
       "retracted_dois": 847,
       "in_crossref": 846,
-      "in_openalex": 823,
+      "in_openalex": 847,
       "crossref_pct": 99.9,
-      "openalex_pct": 97.2
+      "openalex_pct": 100.0
     },
     {
       "publisher": "Hindawi",
@@ -472,33 +474,33 @@
       "publisher": "IOS Press (bought by Sage November 2023)",
       "retracted_dois": 1782,
       "in_crossref": 1780,
-      "in_openalex": 1456,
+      "in_openalex": 1771,
       "crossref_pct": 99.9,
-      "openalex_pct": 81.7
+      "openalex_pct": 99.4
     },
     {
       "publisher": "AIP Publishing",
       "retracted_dois": 398,
       "in_crossref": 398,
-      "in_openalex": 225,
+      "in_openalex": 398,
       "crossref_pct": 100.0,
-      "openalex_pct": 56.5
+      "openalex_pct": 100.0
     },
     {
       "publisher": "Association for Computing Machinery (ACM)",
       "retracted_dois": 438,
       "in_crossref": 438,
-      "in_openalex": 436,
+      "in_openalex": 438,
       "crossref_pct": 100.0,
-      "openalex_pct": 99.5
+      "openalex_pct": 100.0
     },
     {
       "publisher": "EDP Sciences",
       "retracted_dois": 782,
       "in_crossref": 782,
-      "in_openalex": 400,
+      "in_openalex": 782,
       "crossref_pct": 100.0,
-      "openalex_pct": 51.2
+      "openalex_pct": 100.0
     },
     {
       "publisher": "MDPI",
@@ -512,37 +514,25 @@
       "publisher": "PLoS",
       "retracted_dois": 1297,
       "in_crossref": 1297,
-      "in_openalex": 1293,
+      "in_openalex": 1296,
       "crossref_pct": 100.0,
-      "openalex_pct": 99.7
+      "openalex_pct": 99.9
     },
     {
       "publisher": "Royal Society of Chemistry (RSC)",
       "retracted_dois": 451,
       "in_crossref": 451,
-      "in_openalex": 449,
+      "in_openalex": 451,
       "crossref_pct": 100.0,
-      "openalex_pct": 99.6
+      "openalex_pct": 100.0
     },
     {
       "publisher": "Springer - Biomed Central (BMC)",
       "retracted_dois": 618,
       "in_crossref": 618,
-      "in_openalex": 613,
+      "in_openalex": 618,
       "crossref_pct": 100.0,
-      "openalex_pct": 99.2
+      "openalex_pct": 100.0
     }
-  ],
-  "crossref_vs_retractionwatch_COMPLETE": {
-    "rw_retracted_dois": 60247,
-    "crossref_retracted_dois": 78907,
-    "intersection": 58449,
-    "union": 80705,
-    "agreement_pct": 72.42,
-    "in_rw_not_crossref": 1798,
-    "in_rw_not_crossref_pct_of_rw": 2.98,
-    "in_crossref_not_rw": 20458,
-    "in_crossref_not_rw_pct_of_cr": 25.93,
-    "disagreement_pct_of_union": 27.58
-  }
+  ]
 }

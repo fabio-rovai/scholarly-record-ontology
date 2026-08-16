@@ -46,9 +46,9 @@ the 264 empty-nature rows plus one malformed row.
 **Guarded null result:** zero records have a retraction date earlier than the
 original publication date. The date fields are internally consistent.
 
-## 3. The OpenAlex shortfall, and exactly what it affects
+## 3. OpenAlex metering, and a caveat that proved material
 
-Partway through harvesting, OpenAlex began returning HTTP 429 with this body:
+Partway through the first day's harvesting, OpenAlex began returning HTTP 429:
 
 ```json
 {"error":"Rate limit exceeded",
@@ -58,35 +58,47 @@ Partway through harvesting, OpenAlex began returning HTTP 429 with this body:
 ```
 
 Response headers show `x-ratelimit-limit: 1000`, `x-ratelimit-limit-usd: 0.1`.
-OpenAlex now meters its API: roughly 1,000 requests, or $0.10, per day free.
-This halted the harvest at 107,200 of 134,094 records and the probe at 18,717 of
-62,708. Both scripts are resumable and will complete after the UTC reset.
+OpenAlex meters its API at roughly 1,000 requests, or $0.10, per day free. That
+halted the harvest at 107,200 of 134,094 records. **It was resumed after the UTC
+reset and is now complete at 134,113 records**, so no figure in the README
+depends on partial OpenAlex data any longer.
 
 I have not independently confirmed when this pricing began or its full terms; the
 pricing page is a JavaScript application that did not render to a fetchable
-document. The behaviour above is directly observed and reproducible; the policy
-history is **not verified**.
+document. The metering behaviour is directly observed and reproducible; the
+policy history is **not verified**.
 
-**What this does and does not affect:**
+### The caveat was not merely formal
 
-- **Unaffected (complete data):** the Crossref × Retraction Watch comparison
-  (README finding 1), the `update-type` vocabulary analysis (finding 3), and the
-  self-referential notice rate (finding 4). These use only complete harvests.
-- **Lower bounds:** every absolute count derived from OpenAlex: notices flagged
-  retracted, post-retraction citations, the three-way union. Adding the missing
-  20% can only increase them.
-- **Provisional, direction of bias unknown:** the three-way agreement figure of
-  49.99%. Completing the OpenAlex set grows both the intersection and the union,
-  and the net effect is not predictable. **Do not cite the 50% figure.** Cite the
-  Crossref × Retraction Watch figure of 72.42%, which is complete.
-- **Percentages within the harvested subset** (e.g. 64.2% of notice DOIs flagged)
-  are computed over what was retrieved. Cursor order follows OpenAlex work ID,
-  which correlates with record creation, so the subset is not a random sample. I
-  regard these percentages as indicative and robust in sign, not exact.
+While the harvest was partial I warned that cursor order follows OpenAlex work
+ID, which correlates with record creation, so the harvested subset was not a
+random sample and percentages drawn from it should be treated as indicative
+rather than exact. Completing the harvest showed that warning was correct and
+that the effect was large.
 
-The probe covers the first 62,708 Retraction Watch DOIs in file order after
-excluding 3,581 marked "unavailable", 2,788 blank, and DOIs containing
-characters that break the pipe-delimited OR filter syntax.
+Composition of the final 26,913 records, the segment missing on day one:
+
+| | share |
+|---|---|
+| Retraction Watch **notice** DOIs | 56.6% |
+| Europe PMC **notice** DOIs | 33.2% |
+| Retraction Watch original-paper DOIs | 5.1% |
+
+The tail of the cursor was dominated by notices. Consequently the headline
+notice-conflation figure moved from a provisional 64.2% to a complete 94.5%, and
+the Europe PMC control from 51.15% to 95.95%. Both moved in the same direction
+and now agree with each other.
+
+The lesson is worth stating plainly because it cuts against the usual instinct: a
+partial harvest is not a small version of the whole. Where the sort key
+correlates with how records were created, the missing slice can be the slice that
+matters most. Had I published the 64.2% figure without the caveat, I would have
+understated the defect by a third.
+
+The DOI probe (`scripts/03`) remains partial and is resumed as budget allows. It
+supports only the null result in README finding 6, where 22 of 20,779 probed DOIs
+found in OpenAlex were unflagged (0.11%). That rate has been stable across two
+sample sizes.
 
 ## 4. Post-retraction citations: why it is a lower bound
 
@@ -99,7 +111,11 @@ higher:
    pre-retraction, which is conservative.
 3. The OpenAlex harvest is 80% complete.
 
-Reported: 291,177 citations across 35,261 works.
+Reported: 291,177 citations across 35,261 works. This figure did not change when
+the OpenAlex harvest was completed, which is itself corroborating evidence: the
+26,913 records added were overwhelmingly retraction notices rather than retracted
+papers, and notices do not appear in Retraction Watch's original-paper column, so
+they contribute nothing here.
 
 ## 5. A Crossref API caveat worth knowing
 

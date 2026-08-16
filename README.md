@@ -54,9 +54,9 @@ A retraction notice is the document announcing that a paper has been withdrawn.
 It is a valid, standing part of the record. OpenAlex flags tens of thousands of
 them as retracted work:
 
-- **64.2%** of Retraction Watch notice DOIs carry `is_retracted: true` in OpenAlex
-- **25,681** notice DOIs that are *only* notices (never themselves a retracted paper) are flagged retracted
-- **76.5%** of the DOIs OpenAlex uniquely calls retracted are notice DOIs
+- **94.5%** of Retraction Watch notice DOIs carry `is_retracted: true` in OpenAlex (53,734 of 56,848)
+- **93.0%** of DOIs that are *only* notices, never themselves a retracted paper, are flagged retracted (40,430 of 43,489)
+- **74.5%** of the DOIs OpenAlex uniquely calls retracted are notice DOIs
 
 The most legible example: **[10.1038/s41586-023-06774-2](https://doi.org/10.1038/s41586-023-06774-2)**,
 "Retraction Note: Evidence of near-ambient superconductivity in a N-doped lutetium
@@ -77,20 +77,24 @@ DOIs and asking each register what it says about them:
 
 | Register | Notice DOIs it treats as retracted research |
 |---|---|
-| **OpenAlex** | **10,130 (51.15%)** |
+| **OpenAlex** | **19,001 (95.95%)** |
 | Crossref | 181 (0.91%) |
 | Retraction Watch | 70 (0.35%) |
 | Europe PMC itself | 64 (0.32%) |
 
+Two independent measurements, one against Retraction Watch's notice column
+(94.5%) and one against Europe PMC's publication types (95.95%), agree. This is
+not a partial defect. OpenAlex flags essentially every retraction notice it holds
+as retracted research.
+
 Three registers keep the categories apart. One does not. Preserving the
 distinction is plainly achievable in production, which is what makes this a
-design defect rather than an inherent difficulty. The OpenAlex figure is a floor,
-because that harvest is 80% complete.
+design defect rather than an inherent difficulty.
 
-### 2b. Four registers, and only 22.9% agreement
+### 2b. Four registers, and only 19.24% agreement
 
-With Europe PMC added, 114,048 DOIs are asserted retracted by at least one of the
-four registers. Only **26,119 (22.9%)** are asserted by all four. **33.13%** rest
+With Europe PMC added, 137,243 DOIs are asserted retracted by at least one of the
+four registers. Only **26,407 (19.24%)** are asserted by all four. **43.09%** rest
 on a single register's say-so and would vanish from the record if you happened to
 consult a different one.
 
@@ -212,8 +216,8 @@ ontology/sro-core.ttl        The ontology. 228 triples, 10 classes, 13 object
 shapes/sro-shapes.ttl        SHACL in three layers: structural, value, coherence.
 queries/README.md            Six worked SPARQL queries.
 scripts/01..08               The pipeline, from live fetch to RDF.
-data/graph/sro-instances.nt.gz   2,912,149 triples: 119,456 works, 60,637
-                             corrective notices, 58,432 recorded disagreements,
+data/graph/sro-instances.nt.gz   3,192,090 triples: 142,648 works, 60,637
+                             corrective notices, 77,936 recorded disagreements,
                              across four registers.
 data/graph/sro-propagation.nt.gz 1,450,797 triples: citation events and graded
                              propagation signals.
