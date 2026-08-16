@@ -1,0 +1,27 @@
+{
+  "upload_type": "software",
+  "title": "Scholarly Record Ontology (SRO)",
+  "description": "An ontology and open dataset for the integrity status of the scholarly record, built to measure how badly the registers of that record disagree with each other. Retraction status is modelled not as a property of a work but as a dated claim by a named register, with first-class vocabulary for disagreement between registers (including register silence) and a citator-style propagation layer that grades citing works. Measurements across Crossref, Retraction Watch, OpenAlex and Europe PMC include 72.42 percent two-register agreement, 19.24 percent four-register agreement, and near-total conflation of retraction notices with retracted research in OpenAlex. Ontology, shapes, queries and code are MIT; documentation and derived findings are CC BY 4.0.",
+  "creators": [
+    {
+      "name": "Rovai, Fabio",
+      "affiliation": "The Tesseract Academy (Kampakis and Co Ltd)"
+    }
+  ],
+  "license": "mit",
+  "keywords": [
+    "ontology",
+    "SHACL",
+    "scholarly record",
+    "retraction",
+    "research integrity",
+    "register assurance",
+    "identifier governance"
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/fabio-rovai/scholarly-record-ontology"
+    }
+  ]
+}
