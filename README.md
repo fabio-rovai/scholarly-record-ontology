@@ -98,22 +98,42 @@ four registers. Only **26,407 (19.24%)** are asserted by all four. **43.09%** re
 on a single register's say-so and would vanish from the record if you happened to
 consult a different one.
 
-### 3. The corrective vocabulary is uncontrolled
+### 3. The corrective vocabulary is declared closed and is not enforced
 
 Crossref's `update-type` is the field the scholarly record uses to say what kind
-of correction occurred. Across a complete harvest of **420,657** corrective
-records, it takes **19 distinct values**, including:
+of correction occurred. The XSD (`common5.4.0.xsd`) declares it a **closed
+enumeration of 12 values** on a `required` attribute. The live index holds
+**34 distinct values**, of which **22 are schema-invalid**, across 365 records
+(Crossref facet, 16 August 2026). Examples:
 
 | Value | Count | What it is |
 |---|---|---|
 | `retration` | 1 | misspelling of "retraction" |
 | `retracion` | 1 | a *different* misspelling of "retraction" |
-| `Retraction` | 3 | case variant, distinct from `retraction` |
+| `Retraction` | 3 | case variant; `xsd:NMTOKEN` is case-sensitive, so this is invalid |
 | `expression-of-concern` | 3 | hyphenated variant of `expression_of_concern` |
 | `68818` | 1 | a bare integer |
-| `err` | 212 | abbreviation coexisting with `erratum` (139,755), `corrigendum` (8,944) and `corrected` (54) |
+| `err` | 192 | abbreviation coexisting with `erratum`, `corrigendum` and `corrected` (54) |
+| `this_is_some_update_23` | 1 | test data in the production index |
 
-Every one is checkable. The misspelling `retration` belongs to
+**A correction to an earlier version of this README.** This section first
+reported 19 distinct values. That figure was wrong, and the reason is worth
+recording. The pipeline harvests by querying 13 named update-types, so it can
+only discover values that co-occur on records returned by those queries. Values
+such as `this_is_some_update_23`, `interesting_update` and `publisher-note` were
+never reachable that way. The facet enumerates values more completely than a
+seeded harvest, even though it *undercounts volumes* badly (it reports 27,652
+retraction assertions against 117,521 in the full harvest). Facets for
+enumeration, cursor harvests for counting. The 19 figure is not reproducible and
+should not be cited.
+
+**Do not argue this from volume.** 365 records out of 475,593 is 0.077%, and a
+reviewer is right to say "so what" to that. The finding is about governance, not
+prevalence: the schema declares a closed enumeration on a required attribute, and
+`this_is_some_update_23` is nonetheless in the production index. Deposit-time
+validation is not enforced on this path.
+
+Every value is checkable. The misspelling `retration` belongs to
 **[10.1016/j.cie.2010.04.003](https://doi.org/10.1016/j.cie.2010.04.003)**,
 published by Elsevier BV, whose title literally begins "RETRACTED:". The human-readable
 title says retracted; the machine-readable status is misspelled, so every query
@@ -179,6 +199,15 @@ build report:
 - **CiTO** has `cito:retracts` and `cito:isRetractedBy`
 - **FaBiO** has `fabio:Retraction`, `fabio:RetractionNotice`, `fabio:hasRetractionDate`
 - **PSO** has `pso:retracted-from-publication`
+
+There is also a hard logical defect, verified in the FaBiO source
+(version 2.3, `owl:versionIRI .../fabio/2026-05-18`).
+`fabio:hasRetractionDate` is declared **`owl:FunctionalProperty`**, while
+`fabio:hasCorrectionDate` is not. So two registers reporting different retraction
+dates for one paper does not merely go unmodelled: it makes the graph
+**OWL-inconsistent**. Register disagreement about a retraction date is,
+formally, a contradiction rather than an observation. The defect is specific to
+retraction.
 
 None of them can express any of the following, all of which occur at scale in
 real data:
@@ -258,7 +287,57 @@ defects in the data model.
 
 ## Related work
 
-This sits alongside an existing quantitative literature rather than ahead of it.
+This sits alongside an existing quantitative literature rather than ahead of it,
+and one point needs stating plainly at the top: **the fact that retraction
+registers disagree is not a discovery of this project.** It is an established,
+funded research programme, principally Jodi Schneider's group.
+
+- **Salami, McCumber & Schneider (2026)**, "Analyzing the Consistency of
+  Retraction Indexing", MetaArXiv, [10.31222/osf.io/gvfk5_v4](https://doi.org/10.31222/osf.io/gvfk5_v4),
+  compares **11 sources over a union of 83,317 items** and finds **92.64%** of
+  items carry some disagreement, with only **41 items (0.05%)** recorded as
+  retracted in all eleven. Their earlier four-source study
+  ([STI 2023](https://doi.org/10.55835/6441e5cae04dbe5586d06a5f)) found only 3%
+  agreement across Crossref, Retraction Watch, Scopus and Web of Science.
+  The 72.42% Crossref-versus-Retraction-Watch figure reported above is a
+  two-source special case of that result, not a new one.
+- **Si, Salami & Schneider (2026)**, "Tracking the Data Quality Landscape of
+  Retracted Papers" (STI 2026, forthcoming September 2026,
+  [preprint PDF](https://jodischneider.com/pubs/stiend2026.pdf)), reports that
+  **661 of 925 sampled DOIs (71.46%) are retraction notices indexed as retracted
+  papers in Crossref**. The category error measured here for OpenAlex is
+  therefore already documented for Crossref. What this project adds is the
+  four-register comparison, the Europe PMC control, and the finding that the
+  defect is near-total in OpenAlex (94.5% and 95.95%) while being rare in
+  Crossref by our own measurement (0.91%).
+- **Markovic & Indukuri (2026)**, RIPE-O, the Research Integrity Provenance and
+  Evidence Ontology ([arXiv:2608.07202](https://arxiv.org/abs/2608.07202),
+  ISWC 2026), is the closest existing ontology and does model
+  `ExpressionOfConcern`. It is built for provenance of integrity *assessments* of
+  clinical trials, carries a single source identifier
+  (`ripe:retractionWatchRecordId`), and does not model disagreement between
+  registers.
+- **Hauschke & Nazarovets (2025)**, *Journal of Information Science* 52(4),
+  [10.1177/01655515251322478](https://doi.org/10.1177/01655515251322478),
+  documented an earlier OpenAlex episode in which granular Crossref metadata
+  collapsed into a single Boolean. That incident was transient and repaired; the
+  conflation measured here is structural and current.
+- **Hsiao & Schneider (2021)**, *QSS* 2(4),
+  [10.1162/qss_a_00155](https://doi.org/10.1162/qss_a_00155), found **94.6%** of
+  post-retraction citation contexts show no awareness of the retraction.
+- **RISRS (Schneider et al., 2022)**,
+  [10.1186/s41073-022-00125-x](https://doi.org/10.1186/s41073-022-00125-x),
+  recommends "a taxonomy of retraction categories/classifications and
+  corresponding retraction metadata that can be adopted by all stakeholders".
+  This project is an attempt at part of that.
+
+**What is therefore claimed here**, and only this: a formal, source-attributed
+representation in which register *silence* is expressible; the four states no
+scholarly vocabulary can express (expression of concern, reinstatement, partial
+retraction, removal); the `owl:FunctionalProperty` defect above; Europe PMC as a
+register, which no published comparison study includes; and the propagation
+layer. The empirical fact of disagreement belongs to the authors above.
+
 
 Jonas Oppenlaender, *How Ten Publishers Retract Research*
 ([arXiv:2602.19197](https://arxiv.org/abs/2602.19197), February 2026), analyses

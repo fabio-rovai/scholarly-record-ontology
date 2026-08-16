@@ -117,7 +117,28 @@ the OpenAlex harvest was completed, which is itself corroborating evidence: the
 papers, and notices do not appear in Retraction Watch's original-paper column, so
 they contribute nothing here.
 
-## 5. A Crossref API caveat worth knowing
+## 5. A Crossref API caveat worth knowing, and a corrected figure
+
+**Correction.** An earlier version of this report and the README stated that
+`update-type` takes 19 distinct values. That is wrong. The live facet
+(16 August 2026) enumerates **34** distinct values, **22** of them outside the
+XSD's closed 12-value enumeration, across 365 records.
+
+The error was methodological, not arithmetic. `scripts/01` harvests by iterating
+13 named update-types, so it can only observe values that appear on records
+returned by those 13 queries. Values such as `this_is_some_update_23`,
+`interesting_update`, `publisher-note`, `correspondence` and `corrected-article`
+were never reachable. The 19 figure describes the vocabulary *within a seeded
+sample*, not the vocabulary.
+
+The two facilities have opposite failure modes and both are needed:
+
+| | enumerating distinct values | counting records |
+|---|---|---|
+| Facet | more complete (34) | badly undercounts |
+| Seeded cursor harvest | incomplete (19) | accurate |
+
+
 
 Facet counts and filter totals disagree substantially. `facet=update-type:*` over
 `has-update:true` reports 27,652 for `retraction`, while
