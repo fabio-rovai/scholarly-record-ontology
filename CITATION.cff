@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this ontology or dataset, please cite it as below."
+title: "Scholarly Record Ontology (SRO)"
+type: software
+authors:
+  - family-names: Rovai
+    given-names: Fabio
+    affiliation: "The Tesseract Academy (Kampakis and Co Ltd)"
+repository-code: "https://github.com/fabio-rovai/scholarly-record-ontology"
+license: MIT
+version: 0.1.0
+date-released: 2026-08-15
+keywords:
+  - ontology
+  - SHACL
+  - retraction
+  - scholarly record
+  - register assurance
+  - identifier governance
+abstract: "An ontology and open dataset for the integrity status of the scholarly record, modelling retraction status as a dated claim by a named register and measuring how the registers of that record disagree with each other."
